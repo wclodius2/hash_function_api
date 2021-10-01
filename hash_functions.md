@@ -1585,10 +1585,11 @@ functions of `stdlib_32_bit_hash_functions` and
 `stdlib_64_bit_hash_functions`, `test_32_bit_hash_functions` and
 `test_64_bit_hash_functions` respectively. These are primarilly set
 up to test runtime performance of the functions. They take a sample of
-`2**22` integers of kind `INT8` and break it up into vectors of size
+`2**18` integers of kind `INT8` and break it up into vectors of size
 1, 2, 4, 8, 16, 64,  256, and 1024 elements, yielding `2**22`,
-`2**21`, `2**20`, `2**19`, `2**18`, `2**16`, `2**14`,  and  `2**12`
-vectors respectively. These are then processed by the hash functions,
+`2**21`, `2**20`, `2**19`, `2**18`, `2**16`, `2**14`, and  `2**12`
+vectors respectively, and repeat the processing 4 times. These are
+then processed by the hash functions,
 and the time for processing is reported. Testing so far has been on a
 MacBook Pro with a 2.3 GHz Quad-Core Intel Core i5 and 8 GB 2133 MHz
 LPDDR3 of RAM, using GNU Fortran (GCC) 11.1.0 to compile the code. The
@@ -1598,84 +1599,84 @@ table:
 | Algorithm  | Key Size  | Key #      | Time (s) |
 |            | Bytes     |            |          |
 |------------|-----------|------------|----------|
-|     FNV-1  |       1   |    4194304 |   0.1136 |
-|     FNV-1  |       2   |    2097152 |   0.0925 |
-|     FNV-1  |       4   |    1048576 |   0.0786 |
-|     FNV-1  |       8   |     524288 |   0.0726 |
-|     FNV-1  |      16   |     262144 |   0.0787 |
-|     FNV-1  |      64   |      65536 |   0.0690 |
-|     FNV-1  |     256   |      16384 |   0.0688 |
-|     FNV-1  |    1024   |       4096 |   0.0677 |
-|    FNV-1a  |       1   |    4194304 |   0.1161 |
-|    FNV-1a  |       2   |    2097152 |   0.0979 |
-|    FNV-1a  |       4   |    1048576 |   0.0828 |
-|    FNV-1a  |       8   |     524288 |   0.0770 |
-|    FNV-1a  |      16   |     262144 |   0.0812 |
-|    FNV-1a  |      64   |      65536 |   0.0721 |
-|    FNV-1a  |     256   |      16384 |   0.0706 |
-|    FNV-1a  |    1024   |       4096 |   0.0718 |
-|  nmhash32  |       1   |    4194304 |   0.9141 |
-|  nmhash32  |       2   |    2097152 |   0.4562 |
-|  nmhash32  |       4   |    1048576 |   0.2281 |
-|  nmhash32  |       8   |     524288 |   0.5383 |
-|  nmhash32  |      16   |     262144 |   0.2681 |
-|  nmhash32  |      64   |      65536 |   0.2236 |
-|  nmhash32  |     256   |      16384 |   0.0668 |
-|  nmhash32  |    1024   |       4096 |   0.0589 |
-| nmhash32x  |       1   |    4194304 |   0.7693 |
-| nmhash32x  |       2   |    2097152 |   0.4333 |
-| nmhash32x  |       4   |    1048576 |   0.2333 |
-| nmhash32x  |       8   |     524288 |   0.1293 |
-| nmhash32x  |      16   |     262144 |   0.1041 |
-| nmhash32x  |      64   |      65536 |   0.0490 |
-| nmhash32x  |     256   |      16384 |   0.0667 |
-| nmhash32x  |    1024   |       4096 |   0.0583 |
-|     water  |       1   |    4194304 |   0.4933 |
-|     water  |       2   |    2097152 |   0.2522 |
-|     water  |       4   |    1048576 |   0.1532 |
-|     water  |       8   |     524288 |   0.0774 |
-|     water  |      16   |     262144 |   0.0558 |
-|     water  |      64   |      65536 |   0.0356 |
-|     water  |     256   |      16384 |   0.0312 |
-|     water  |    1024   |       4096 |   0.0295 |
+|     FNV-1  |       1   |    1048576 |  0.02909 |
+|     FNV-1  |       2   |     524288 |  0.02443 |
+|     FNV-1  |       4   |     262144 |  0.02122 |
+|     FNV-1  |       8   |     131072 |  0.01934 |
+|     FNV-1  |      16   |      65536 |  0.02086 |
+|     FNV-1  |      64   |      16384 |  0.01815 |
+|     FNV-1  |     256   |       4096 |  0.01710 |
+|     FNV-1  |    1024   |       1024 |  0.01667 |
+|    FNV-1a  |       1   |    1048576 |  0.02831 |
+|    FNV-1a  |       2   |     524288 |  0.02449 |
+|    FNV-1a  |       4   |     262144 |  0.02054 |
+|    FNV-1a  |       8   |     131072 |  0.01879 |
+|    FNV-1a  |      16   |      65536 |  0.01866 |
+|    FNV-1a  |      64   |      16384 |  0.01792 |
+|    FNV-1a  |     256   |       4096 |  0.01782 |
+|    FNV-1a  |    1024   |       1024 |  0.01723 |
+|  nmhash32  |       1   |    1048576 |  0.22025 |
+|  nmhash32  |       2   |     524288 |  0.11048 |
+|  nmhash32  |       4   |     262144 |  0.05546 |
+|  nmhash32  |       8   |     131072 |  0.13429 |
+|  nmhash32  |      16   |      65536 |  0.06691 |
+|  nmhash32  |      64   |      16384 |  0.05507 |
+|  nmhash32  |     256   |       4096 |  0.01645 |
+|  nmhash32  |    1024   |       1024 |  0.01474 |
+| nmhash32x  |       1   |    1048576 |  0.18505 |
+| nmhash32x  |       2   |     524288 |  0.10767 |
+| nmhash32x  |       4   |     262144 |  0.05636 |
+| nmhash32x  |       8   |     131072 |  0.03147 |
+| nmhash32x  |      16   |      65536 |  0.02429 |
+| nmhash32x  |      64   |      16384 |  0.01139 |
+| nmhash32x  |     256   |       4096 |  0.01575 |
+| nmhash32x  |    1024   |       1024 |  0.01473 |
+|     water  |       1   |    1048576 |  0.11897 |
+|     water  |       2   |     524288 |  0.05909 |
+|     water  |       4   |     262144 |  0.03743 |
+|     water  |       8   |     131072 |  0.01870 |
+|     water  |      16   |      65536 |  0.01357 |
+|     water  |      64   |      16384 |  0.00888 |
+|     water  |     256   |       4096 |  0.00770 |
+|     water  |    1024   |       1024 |  0.00737 |
 
-while for `test_32_bit_hash_functions` the results are:
+while for `test_64_bit_hash_functions` the results are:
 
 | Algorithm  | Key Size  | Key #      | Time (s) |
 |            | Bytes     |            |          |
 |------------|-----------|------------|----------|
-|     FNV-1  |       1   |    4194304 |   0.1199 |
-|     FNV-1  |       2   |    2097152 |   0.1150 |
-|     FNV-1  |       4   |    1048576 |   0.0944 |
-|     FNV-1  |       8   |     524288 |   0.0978 |
-|     FNV-1  |      16   |     262144 |   0.0875 |
-|     FNV-1  |      64   |      65536 |   0.0811 |
-|     FNV-1  |     256   |      16384 |   0.0791 |
-|     FNV-1  |    1024   |       4096 |   0.0784 |
-|    FNV-1a  |       1   |    4194304 |   0.1193 |
-|    FNV-1a  |       2   |    2097152 |   0.1055 |
-|    FNV-1a  |       4   |    1048576 |   0.0887 |
-|    FNV-1a  |       8   |     524288 |   0.0990 |
-|    FNV-1a  |      16   |     262144 |   0.0909 |
-|    FNV-1a  |      64   |      65536 |   0.0794 |
-|    FNV-1a  |     256   |      16384 |   0.0775 |
-|    FNV-1a  |    1024   |       4096 |   0.0774 |
-|     Pengy  |       1   |    4194304 |   0.9729 |
-|     Pengy  |       2   |    2097152 |   0.4866 |
-|     Pengy  |       4   |    1048576 |   0.2433 |
-|     Pengy  |       8   |     524288 |   0.1221 |
-|     Pengy  |      16   |     262144 |   0.0626 |
-|     Pengy  |      64   |      65536 |   0.0258 |
-|     Pengy  |     256   |      16384 |   0.0150 |
-|     Pengy  |    1024   |       4096 |   0.0120 |
-|    Spooky  |       1   |    4194304 |   0.4052 |
-|    Spooky  |       2   |    2097152 |   0.2599 |
-|    Spooky  |       4   |    1048576 |   0.1039 |
-|    Spooky  |       8   |     524288 |   0.0448 |
-|    Spooky  |      16   |     262144 |   0.0531 |
-|    Spooky  |      64   |      65536 |   0.0158 |
-|    Spooky  |     256   |      16384 |   0.0110 |
-|    Spooky  |    1024   |       4096 |   0.0072 |
+|     FNV-1  |       1   |    1048576 |  0.03022 |
+|     FNV-1  |       2   |     524288 |  0.02818 |
+|     FNV-1  |       4   |     262144 |  0.02386 |
+|     FNV-1  |       8   |     131072 |  0.02449 |
+|     FNV-1  |      16   |      65536 |  0.02239 |
+|     FNV-1  |      64   |      16384 |  0.02032 |
+|     FNV-1  |     256   |       4096 |  0.02075 |
+|     FNV-1  |    1024   |       1024 |  0.01961 |
+|    FNV-1a  |       1   |    1048576 |  0.03203 |
+|    FNV-1a  |       2   |     524288 |  0.03045 |
+|    FNV-1a  |       4   |     262144 |  0.02568 |
+|    FNV-1a  |       8   |     131072 |  0.02647 |
+|    FNV-1a  |      16   |      65536 |  0.02442 |
+|    FNV-1a  |      64   |      16384 |  0.02106 |
+|    FNV-1a  |     256   |       4096 |  0.02057 |
+|    FNV-1a  |    1024   |       1024 |  0.01954 |
+|     Pengy  |       1   |    1048576 |  0.24695 |
+|     Pengy  |       2   |     524288 |  0.13016 |
+|     Pengy  |       4   |     262144 |  0.06446 |
+|     Pengy  |       8   |     131072 |  0.03406 |
+|     Pengy  |      16   |      65536 |  0.01679 |
+|     Pengy  |      64   |      16384 |  0.00713 |
+|     Pengy  |     256   |       4096 |  0.00383 |
+|     Pengy  |    1024   |       1024 |  0.00345 |
+|    Spooky  |       1   |    1048576 |  0.10525 |
+|    Spooky  |       2   |     524288 |  0.06633 |
+|    Spooky  |       4   |     262144 |  0.02733 |
+|    Spooky  |       8   |     131072 |  0.01154 |
+|    Spooky  |      16   |      65536 |  0.01338 |
+|    Spooky  |      64   |      16384 |  0.00391 |
+|    Spooky  |     256   |       4096 |  0.00297 |
+|    Spooky  |    1024   |       1024 |  0.00180 |
 
 As the tested function will typically reside in the instruction cache
 these results do not include the costs of reloading the procedure if
