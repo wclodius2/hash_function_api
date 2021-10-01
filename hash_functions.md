@@ -71,9 +71,11 @@ these functions is available at
 
 Similarly `SPOOKY_HASH` and associated procedures are translations to
 Fortran 2008 and signed two's complement integers of the unsigned 64
-bit V2 `SpookyHash` functions of Bob
+bit version 1 `SpookyHash` functions of Bob
 Jenkins <https://burtleburtle.net/bob/hash/spooky.html> to signed 64
-bit operations. Bob Jenkins has also put this code in the public
+bit operations. Version 1 was chosen over version 2 as version 2 does
+not pass the SMHasher tests, but version 1 does.
+Bob Jenkins has also put this code in the public
 domain and has given permission to treat this code as public domain in
 the USA, provided the code can be used under other licenses and he is
 given appropriate credit.
@@ -440,8 +442,8 @@ significant overhead for smaller objects.
 The code was designed for Little Endian processors, and will give
 different results on Big Endian processors, but the hash quality on
 those processors is probably just as good.
-SpookyHash passes all of Reini Urban's SMHasher tests, and has no
-reported bad seeds.
+SpookyHash version 1 passes all of Reini Urban's SMHasher tests, and
+has no reported bad seeds.
 Its only potential problem is undefined behavior if the key is
 misaligned.
 
@@ -1483,14 +1485,14 @@ The result is a two element integer vector of kind `INT64`.
 
 ##### Note
 
-`SPOOKY_HASH` is an implementation of the 64 bit V2 SpookyHash of Bob
-Jenkins. The code was designed for Little-Endian processors. The
-output is different on Big Endian processors, but still probably as
-good quality. It is often used as a 64 bit hash using the first
-element of the returned value, but can be used as a 128 bit
-hash. `SPOOKY_HASH` has good performance on small keys and excellent
-performance on long keys. It passes all the SMHasher tests and has
-no known bad seeds.
+`SPOOKY_HASH` is an implementation of the 64 bit version 1 of
+SpookyHash of Bob Jenkins. The code was designed for Little-Endian
+processors. The output is different on Big Endian processors, but still
+probably as good quality. It is often used as a 64 bit hash using the
+first element of the returned value, but can be used as a 128 bit
+hash. This version of `SPOOKY_HASH` has good performance on small keys
+and excellent performance on long keys. It passes all the SMHasher tests
+and has no known bad seeds.
 
 ##### Example
 
@@ -1666,13 +1668,13 @@ while for `test_32_bit_hash_functions` the results are:
 |     Pengy  |      64   |      65536 |   0.0258 |
 |     Pengy  |     256   |      16384 |   0.0150 |
 |     Pengy  |    1024   |       4096 |   0.0120 |
-|    Spooky  |       1   |    4194304 |   0.3955 |
-|    Spooky  |       2   |    2097152 |   0.2418 |
-|    Spooky  |       4   |    1048576 |   0.1012 |
-|    Spooky  |       8   |     524288 |   0.0435 |
-|    Spooky  |      16   |     262144 |   0.0524 |
-|    Spooky  |      64   |      65536 |   0.0163 |
-|    Spooky  |     256   |      16384 |   0.0109 |
+|    Spooky  |       1   |    4194304 |   0.4052 |
+|    Spooky  |       2   |    2097152 |   0.2599 |
+|    Spooky  |       4   |    1048576 |   0.1039 |
+|    Spooky  |       8   |     524288 |   0.0448 |
+|    Spooky  |      16   |     262144 |   0.0531 |
+|    Spooky  |      64   |      65536 |   0.0158 |
+|    Spooky  |     256   |      16384 |   0.0110 |
 |    Spooky  |    1024   |       4096 |   0.0072 |
 
 As the tested function will typically reside in the instruction cache
