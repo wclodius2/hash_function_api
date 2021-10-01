@@ -525,13 +525,13 @@ E. Knuth. It multiplies the `KEY` by the odd valued approximation to
 ```fortran
     program demo_fibonacci_hash
       use stdlib_32_bit_hash_codes, only: fibonacci_hash
-	  use iso_fortran_env, only: int32 
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash, source
+      integer(int32) :: hash, source
       allocate( array1(0:2**6-1) )
       array1(:) = 0
-	  source = int(Z'1FFFFFF', int32)
+      source = int(Z'1FFFFFF', int32)
       hash = fibonacci_hash(source, 6)
       azray1(hash) = source
       print*, hash
@@ -588,10 +588,10 @@ expected to be minor compared to its faster hashing rate.
 ```fortran
     program demo_fnv_1_hash
       use stdlib_32_bit_hash_codes, only: fnv_1_hash
-	  use iso_fortran_env, only: int32 
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash
+      integer(int32) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1_hash(array1)
       print*, hash
@@ -647,10 +647,10 @@ expected to be minor compared to its faster hashing rate.
 ```fortran
     program demo_fnv_1a_hash
       use stdlib_32_bit_hash_codes, only: fnv_1a_hash
-	  use iso_fortran_env, only: int32 
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash
+      integer(int32) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1a_hash(array1)
       print*, hash
@@ -821,13 +821,13 @@ This code passes the SMHasher tests, and has no known bad seeds:
 ```fortran
     program demo_nmhash32
       use stdlib_32_bit_hash_codes, only: nmhash32, &
-	      new_nmhash32_seed
-	  use iso_fortran_env, only: int32 
+          new_nmhash32_seed
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash
-	  integer(int32) :: seed = int(Z'11111111`, int32)
-	  call new_nmhash32_seed(seed)
+      integer(int32) :: hash
+      integer(int32) :: seed = int(Z'11111111`, int32)
+      call new_nmhash32_seed(seed)
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = nmhash32(array1, seed)
       print*, seed, hash
@@ -883,13 +883,13 @@ This code passes the SMHasher tests, and has no known bad seeds:
 ```fortran
     program demo_nmhash32x
       use stdlib_32_bit_hash_codes, only: nmhash32x, &
-	      new_nmhash32x_seed
-	  use iso_fortran_env, only: int32 
+	  new_nmhash32x_seed
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash
-	  integer(int32) :: seed = int(Z'11111111`, int32)
-	  call new_nmhash32x_seed(seed)
+      integer(int32) :: hash
+      integer(int32) :: seed = int(Z'11111111`, int32)
+      call new_nmhash32x_seed(seed)
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = nmhash32x(array1, seed)
       print*, seed, hash
@@ -977,18 +977,18 @@ It multiplies the `KEY` by `SEED`, and returns the
 ```fortran
     program demo_universal_mult_hash
       use stdlib_32_bit_hash_codes, only: odd_random_integer, &
-	      universal_mult_hash
-	  use iso_fortran_env, only: int32 
+	  universal_mult_hash
+      use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash, i, seed, source
-	  seed = 0
+      integer(int32) :: hash, i, seed, source
+      seed = 0
       allocate( array1(0:2**6-1) )
-	  do i = 0, 2**6-1
-	      array(i) = i
-	  end do
-	  call odd_random_integer( seed )
-	  source = int(Z'1FFFFFF', int32)
+      do i = 0, 2**6-1
+          array(i) = i
+      end do
+      call odd_random_integer( seed )
+      source = int(Z'1FFFFFF', int32)
       hash = universal_mult_hash(source, seed, 6)
       azray1(hash) = source
       print*, seed, hash, array1
@@ -1047,13 +1047,13 @@ It can have undefined behavior if the key is not word aligned.
 ```fortran
     program demo_water_hash
       use stdlib_32_bit_hash_codes, only: water_hash, &
-	      new_water_hash_seed
-	  use iso_fortran_env, only: int32, int64
+	  new_water_hash_seed
+      use iso_fortran_env, only: int32, int64
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int32) :: hash
-	  integer(int64) :: seed = int(Z'11111111`, int64)
-	  call new_water_hash_seed( seed )
+      integer(int32) :: hash
+      integer(int64) :: seed = int(Z'11111111`, int64)
+      call new_water_hash_seed( seed )
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = water_hash(array1, seed)
       print*, hash, seed
@@ -1149,13 +1149,13 @@ E. Knuth. It multiplies the `KEY` by the odd valued approximation to
 ```fortran
     program demo_fibonacci_hash
       use stdlib_64_bit_hash_codes, only: fibonacci_hash
-	  use iso_fortran_env, only: int64 
+      use iso_fortran_env, only: int64 
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int64) :: hash, source
+      integer(int64) :: hash, source
       allocate( array1(0:2**6-1) )
       array1(:) = 0
-	  source = int(Z'1FFFFFFFF', int64)
+      source = int(Z'1FFFFFFFF', int64)
       hash = fibonacci_hash(source, 6)
       azray1(hash) = source
       print*, hash
@@ -1214,7 +1214,7 @@ expected to be minor compared to its faster hashing rate.
 	  use iso_fortran_env, only: int64
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int64) :: hash
+      integer(int64) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1_hash(array1)
       print*, hash
@@ -1270,10 +1270,10 @@ expected to be minor compared to its faster hashing rate.
 ```fortran
     program demo_fnv_1a_hash
       use stdlib_64_bit_hash_codes, only: fnv_1a_hash
-	  use iso_fortran_env, only: int64
+      use iso_fortran_env, only: int64
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int64) :: hash
+      integer(int64) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1a_hash(array1)
       print*, hash
@@ -1437,14 +1437,14 @@ no known bad seeds.
 ```fortran
     program demo_pengy_hash
       use stdlib_64_bit_hash_codes, only: new_pengy_hash_seed, engy_hash
-	  use iso_fortran_env, only: int64 
+      use iso_fortran_env, only: int64 
       implicit none
       integer, allocatable :: key(:)
-	  integer(int64) :: hash
-	  integer(int32)  ::  seed
+      integer(int64) :: hash
+      integer(int32)  ::  seed
       key = [ 0_int64, 1_int64, 2_int64, 3_int64 ]
-	  seed = 0_int32
-	  call new_pengy_hash_seed( seed )
+      seed = 0_int32
+      call new_pengy_hash_seed( seed )
       hash = pengy_hash( key, seed )
       print*, seed, hash
     end program demo_pengy_hash
@@ -1499,14 +1499,14 @@ and has no known bad seeds.
 ```fortran
     program demo_spooky_hash
       use stdlib_64_bit_hash_codes, only: new_spooky_hash_seed, &
-	      spooky_hash
-	  use iso_fortran_env, only: int64 
+          spooky_hash
+      use iso_fortran_env, only: int64 
       implicit none
       integer, allocatable :: key(:)
-	  integer(int64) :: hash(2), seed(2), source
+      integer(int64) :: hash(2), seed(2), source
       key = [ 0_int64, 1_int64, 2_int64, 3_int64 ]
-	  seed = [ 119_int64, 2_int64**41-1 ]
-	  call new_spooky_hash_seed( seed )
+      seed = [ 119_int64, 2_int64**41-1 ]
+      call new_spooky_hash_seed( seed )
       hash = spooky_hash( key, seed )
       print*, seed, hash
     end program demo_spooky_hash
@@ -1559,18 +1559,18 @@ It multiplies the `KEY` by `SEED`, and returns the
 ```fortran
     program demo_universal_mult_hash
       use stdlib_32_bit_hash_codes, only: odd_random_integer, &
-	      universal_mult_hash
-	  use iso_fortran_env, only: int64
+          universal_mult_hash
+      use iso_fortran_env, only: int64
       implicit none
       integer, allocatable :: array1(:)
-	  integer(int64) :: hash, i, seed, source
-	  seed = 0
+      integer(int64) :: hash, i, seed, source
+      seed = 0
       allocate( array1(0:2**6-1) )
-	  do i = 0, 2**6-1
-	      array(i) = i
-	  end do
-	  call odd_random_integer( seed )
-	  source = int(Z'1FFFFFF', int64)
+      do i = 0, 2**6-1
+          array(i) = i
+      end do
+      call odd_random_integer( seed )
+      source = int(Z'1FFFFFF', int64)
       hash = universal_mult_hash(source, seed, 6)
       azray1(hash) = source
       print*, seed, hash, array1
