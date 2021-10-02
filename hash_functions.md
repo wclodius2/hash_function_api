@@ -566,8 +566,7 @@ It is an `intent(in)` argument.
 
 ##### Result
 
-The result is a scalar integer of kind `INT32` with at most the lowest
-`nbits` nonzero.
+The result is a scalar integer of kind `INT32`.
 
 ##### Note
 
