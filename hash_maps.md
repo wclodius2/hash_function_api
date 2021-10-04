@@ -63,8 +63,8 @@ largely defined in the separated submodules, `stdlib_chaining_hash_maps`
 and `stdlib_open_hash_maps`, respectively.
 In `chaining_hash_map_type` the colliding indices are handled by using
 linked lists with their roots at the hash index.
-In `open_hash_map_type`, the colliding indices are handled by searching from the 
-initial hash index in increasing
+In `open_hash_map_type`, the colliding indices are handled by searching
+from the initial hash index in increasing
 steps of one (modulo the hash map size) for an open map bin.
 
 The maps share many attributes in common. The maps use powers of
@@ -82,7 +82,8 @@ finalization subroutine avoids memory leaks.
 The maps can take entry keys of type `key_type`.
 Both maps allow the addition and lookup of entries, and the inclusion
 of data in addition to the entry key.
-The `chaining_hash_map_type` also allows the selective removal of entries.
+The `chaining_hash_map_type` also allows the selective removal of
+entries.
 
 ## The `stdlib_32_bit_key_data_wrapper` module
 
@@ -97,7 +98,7 @@ functions: `nmhash32`, `nmhash32x`, and `water_hash`, respectively. It
 defines an interface, `hasher_fun`, compatible with the hash functions
 that take a `non-scalar key`. It defines one integer constant used
 as a kind value,`int_hash`. It also defines two types, `key_type` and
-`other_data`, and associated procedures, for storing and manipulating
+`other_type`, and associated procedures, for storing and manipulating
 keys and their associated data.
 
 ### The `stdlib_32_bit_key_data_wrapper` constant, `INT_HASH`
