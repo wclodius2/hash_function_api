@@ -6,7 +6,7 @@ title: Hash maps
 
 (TOC)
 
-## Overview of hash tables
+## Overview of hash maps
 
 The comparison of lexical entities or other objects for equality
 can be computationally expensive.
@@ -38,7 +38,7 @@ his code.
 ## The hash map modules
 
 The Fortran Standard Library provides three modules for the
-implementation of simple hash maps. These tables only accept hash
+implementation of simple hash maps. These maps only accept hash
 functions with a single argument, the key, and that yield a 32 bit
 hash code, The modules will need to be modified to use hash functions
 with a different API. There are three modules:
