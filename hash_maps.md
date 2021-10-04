@@ -52,42 +52,37 @@ hash functions of the Standard Library module,
 hash functions so that they no longer need to be supplied seeds. The
 module `stdlib_chaining_hash_map` defines a datatype,
 `chaining_hash_map_type`, implementing a simple separate chaining hash
-table noted more for its diagnotics than its performance. Finally the
+map noted more for its diagnotics than its performance. Finally the
 module, `stdlib_open_hash_map` defines a datatype,
 `open_hash_map_type`, implementing a simple open addressing hash
-table noted more for its diagnotics than its performance.
-??
-These tables use linked list  separate chaining and linear open
-addressing, respectively, to deal with hash index collisions, and are
-largely defined in the separated submodules, `stdlib_chaining_tables`
-and `stdlib_open_tables`, respectively.
-In `chaining_map_type` the colliding indices are handled by using
-linked lists with their roots at the hash index.
-In `open_map_type`, the colliding indices are handled by searching from the 
-initial hash index in increasing
-steps of one (modulo the hash map size) for an open table bin.
+map noted more for its diagnotics than its performance.
 
-The tables share many attributes in common. The tables use powers of
+These maps use separate chaining with linked lists and linear open
+addressing, respectively, to deal with hash index collisions, and are
+largely defined in the separated submodules, `stdlib_chaining_hash_maps`
+and `stdlib_open_hash_maps`, respectively.
+In `chaining_hash_map_type` the colliding indices are handled by using
+linked lists with their roots at the hash index.
+In `open_hash_map_type`, the colliding indices are handled by searching from the 
+initial hash index in increasing
+steps of one (modulo the hash map size) for an open map bin.
+
+The maps share many attributes in common. The maps use powers of
 two for their slot sizes, so that the function, `fibonacci_hash`, can
-be used to map the hash codes to indices in the table. This is
+be used to map the hash codes to indices in the map. This is
 expected to be more efficient than prime number mapping using a
 modulo operation, and reduces the requirement that the hash
 function need to do a good job randomizing its lower order bits.
 This requires a good randomizing hash method for good performance.
-Both adjust the table size to reduce collisions, based on 
+Both adjust the map size to reduce collisions, based on 
 the ratio of the number of hash map probes to the number of subroutine 
 calls.
-The tables make extensive use of pointers internally, but a private
+The maps make extensive use of pointers internally, but a private
 finalization subroutine avoids memory leaks.
-The tables can take two different types of entry keys: 
-rank one integer arrays of kind `int8`, and assumed length default
-character scalars.
-The `int8` integer array can also be used for other types of keys by 
-mapping the other types to `int8` integer arrays using the 
-`transfer` function.
-Both tables allow the addition and lookup of entries, and the inclusion
+The maps can take entry keys of type `key_type`.
+Both maps allow the addition and lookup of entries, and the inclusion
 of data in addition to the entry key.
-The `chaining_map_type` also allows the selective removal of entries.
+The `chaining_hash_map_type` also allows the selective removal of entries.
 
 ## The `stdlib_32_bit_key_data_wrapper` module
 
