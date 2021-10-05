@@ -955,7 +955,6 @@ containing the elements of the table. The type's definition is below:
     end type chaining_map_entry_ptr
 ```
 
-
 #### The `chaining_map_entry_pool` derived type
 
 The type `chaining_map_entry_pool` is used to implement a pool of
@@ -1019,6 +1018,69 @@ objects of the type, `chaining_hash_map_type`.
     end type chaining_hash_map_type
 ```
 
+### Table of `stdlib_chaining_hash_map` procedures
+
+The `stdlib_chaining_hash_map` module provides procedures in
+several categories: a procedure to initialize the map; a procedure to
+modify the structure of a map; procedures to modify the content of a
+map; procedures to report on the content of a map; and procedures
+to report on the structure of the map. The procedures in each category
+are listed below.
+
+Procedure to initialize a chaining hash map:
+
+* `init_map( map, hasher[, slots_bits, max_bits, status] )` - Routine
+  to initialize a chaining hash map.
+
+Procedure to modify the structure of a map:
+
+* `rehash_map( map, hasher )` - Routine to change the hash function
+  for a map.
+
+Procedures to modify the content of a map:
+
+* `map_entry( map, inmap, key, other )` - Inserts an entry innto the
+  hash map.
+
+* `remove_entry(map, inmap)` - Remove the entry, if any, at map %
+  inverse(inmap).
+
+* `set_other_data( map, inmap, other )` - Change the other data
+  associated with the entry.
+
+Procedures to report the content of a map:
+
+* `get_other_data( map, inmap, other )` - Returns the other data
+  associated with the inverse table index 
+
+* `in_map( map, inmap, key )` - Returns the index into the INVERSE
+  array associated with the KEY 
+
+* `unmap( map, inmap, key )` - Returns a copy of the key associated
+with an index to the inverse table.
+
+* `valid_index(map, inmap)` - Returns a flag indicating whether INMAP
+  is a valid index.
+
+Procedures to report on the structure of the map:
+
+* `calls( map )` - the number of subroutine calls on the hash map.
+
+* `entries( map )`- the number of entries in a hash map.
+
+* `loading( map )` - the number of entries relative to slots in a hash
+  map.
+
+* `map_probes( map )` - the total number of table probes on a hash
+  map.
+
+* `slots( map )` - Returns the number of allocated slots in a hash
+  map.
+
+* `total_depth( map )` - Returns the total number of one's based
+offsets of slot entries from their slot index
+
+### Specifications of the `stdlib_chaining_hash_map` procedures
 
 #### `calls` - Returns the number of calls on a hash map
 
