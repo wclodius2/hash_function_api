@@ -2053,7 +2053,6 @@ containing the elements of the table. The type's definition is below:
     end type open_map_entry_ptr
 ```
 
-
 #### The `open_hash_map_type` derived type
 
 The `open_hash_map_type` derived type implements a separate
@@ -2096,6 +2095,70 @@ objects of the type, `open_hash_map_type`.
     end type open_hash_map_type
 ```
 
+### Table of `stdlib_open_ehash_map` procedures
+
+The `stdlib_open_hash_map` module provides procedures in
+several categories: a procedure to initialize the map; a procedure to
+modify the structure of a map; procedures to modify the content of a
+map; procedures to report on the content of a map; and procedures
+to report on the structure of the map. The procedures in each category
+are listed below.
+
+Procedure to initialize a chaining hash map:
+
+* `init_map( map, hasher[, slots_bits, max_bits, load_factor, status]
+  )` - Routine to initialize a chaining hash map.
+
+Procedure to modify the structure of a map:
+
+* `rehash_map( map, hasher )` - Routine to change the hash function
+  for a map.
+
+Procedures to modify the content of a map:
+
+* `map_entry( map, inmap, key, other )` - Inserts an entry innto the
+  hash map.
+
+* `set_other_data( map, inmap, other )` - Change the other data
+  associated with the entry.
+
+Procedures to report the content of a map:
+
+* `get_other_data( map, inmap, other )` - Returns the other data
+  associated with the inverse table index 
+
+* `in_map( map, inmap, key )` - Returns the index into the INVERSE
+  array associated with the KEY 
+
+* `unmap( map, inmap, key )` - Returns a copy of the key associated
+with an index to the inverse table.
+
+* `valid_index(map, inmap)` - Returns a flag indicating whether INMAP
+  is a valid index.
+
+Procedures to report on the structure of the map:
+
+* `calls( map )` - the number of subroutine calls on the hash map.
+
+* `entries( map )`- the number of entries in a hash map.
+
+* `load_factor( mP )` - Returns the maximum number of entries relative
+  to slots in a open addressing hash map
+
+* `loading( map )` - the number of entries relative to slots in a hash
+  map.
+
+* `map_probes( map )` - the total number of table probes on a hash
+  map.
+
+* `slots( map )` - Returns the number of allocated slots in a hash
+  map.
+
+* `total_depth( map )` - Returns the total number of one's based
+offsets of slot entries from their slot index
+
+
+### Specifications of the `stdlib_open_hash_map` procedures
 
 #### `calls` - Returns the number of calls on a hash map
 
