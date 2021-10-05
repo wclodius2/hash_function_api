@@ -155,7 +155,7 @@ Procedures to hash keys to 32 bit integers:
 * `seeded_nmhash32x_hasher( key )` - hashes a key using the nmhash32x
   algorithm.
 
-* `seeded_water_hash( key )` - hashes a key using the waterhash
+* `seeded_water_hasher( key )` - hashes a key using the waterhash
   algorithm.
 
 ### Specifications of the `stdlib_32_bit_key_data_wrapper` procedures
