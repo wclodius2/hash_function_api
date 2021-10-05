@@ -120,6 +120,44 @@ It also defines five procedures for those types: `copy_key`,
 `copy_other`, `free_key`, `free_other`, and `key_test`, for use by
 the hash maps to manipulate or inquire of components of those types.
 
+### Table of `stdlib_32_bit_key_data_wrapper` procedures
+
+The  `stdlib_32_bit_key_data_wrapper` module provides procedures in
+several categories: procedures to mamipulate data of the `key_type`;
+procedures to manipulate data of the `other_type`, and 32 bit hash
+functions for keys. The procedures in each category are listed below.
+
+Procedures to manipulate `key_type` data:
+
+* `copy_key( key_in, key_out )` - Copies the contents of the key,
+  key_in, to the key, key_out.
+
+* `free_key( key )` - frees the memory in key.
+
+* `key_tes( key1, key2 )` - compares two keys for equality.
+
+Procedures to manipulate `other_type` data:
+
+* `copy_other( other_in, other_out )` - Copies the contents of the
+  other data in, other_in, to the other data, other_out.
+
+* `free_other( other )` - frees the memory in other.
+
+Procedures to hash keys to 32 bit integers:
+
+* `fnv_1_hasher( key )` - hashes a key using the FNV-1 algorithm.
+
+* `fnv_1a_hasher( key )` - hashes a key using the FNV-1a algorithm.
+
+* `seeded_nmhash32_hasher( key )` - hashes a key using the nmhash32
+  algorithm.
+
+* `seeded_nmhash32x_hasher( key )` - hashes a key using the nmhash32x
+  algorithm.
+
+* `seeded_water_hash( key )` - hashes a key using the waterhash
+  algorithm.
+
 ### Specifications of the `stdlib_32_bit_key_data_wrapper` procedures
 
 #### `copy_key` - Returns a copy of the key
