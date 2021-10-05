@@ -134,7 +134,7 @@ Procedures to manipulate `key_type` data:
 
 * `free_key( key )` - frees the memory in key.
 
-* `key_tes( key1, key2 )` - compares two keys for equality.
+* `key_test( key1, key2 )` - compares two keys for equality.
 
 Procedures to manipulate `other_type` data:
 
