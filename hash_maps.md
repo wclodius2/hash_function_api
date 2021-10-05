@@ -110,15 +110,27 @@ currently has the value, `INT32`.
 ### The `stdlib_32_bit_key_data_wrapper` module derived types
 
 The `stdlib_32_bit_key_data_wrapper` module defines two derived types:
+`key_type`, and `other_type`. The `key_type` is intended to be used
+for the search keys of hash tables.  The `other_type` is intended to
+store additional data associated with a key. Both types are
+opaque. Their current representations are as follows
 
-* `key_type` - defines storage as a public allocatable INT8 vector,
-  `value`, for the keys to be hashed,
-* `other_type` - defines storage as a public allocatable INT8 vector,
-  `value`, for the data associated with each key.
+```fortran
+    type :: key_type
+        private
+        integer(int8), allocatable :: value(:)
+    end type key_type
 
-It also defines five procedures for those types: `copy_key`,
-`copy_other`, `free_key`, `free_other`, and `key_test`, for use by
-the hash maps to manipulate or inquire of components of those types.
+    type :: other_type
+        private
+        integer(int8), allocatable :: value(:)
+    end type other_type
+```
+
+The  module also defines seven procedures for those types: `copy_key`,
+`copy_other`, `free_key`, `free_other`, `get`, `key_test`, and `set`
+for use by the hash maps to manipulate or inquire of components of
+those types.
 
 ### Table of `stdlib_32_bit_key_data_wrapper` procedures
 
@@ -132,7 +144,11 @@ Procedures to manipulate `key_type` data:
 * `copy_key( key_in, key_out )` - Copies the contents of the key,
   key_in, to the key, key_out.
 
+* `get( key, value )` - extracts the content of key into value.
+
 * `free_key( key )` - frees the memory in key.
+
+* `set( key, value )` - sets the content of key to value.
 
 * `key_test( key1, key2 )` - compares two keys for equality.
 
@@ -140,6 +156,10 @@ Procedures to manipulate `other_type` data:
 
 * `copy_other( other_in, other_out )` - Copies the contents of the
   other data in, other_in, to the other data, other_out.
+
+* `get( other, value )` - extracts the content of other into value.
+
+* `set( other, value )` - sets to content of other to value.
 
 * `free_other( other )` - frees the memory in other.
 
@@ -197,11 +217,11 @@ is an `intent(out)` argument.
       integer(int8), allocatable :: value(:)
       type(key_type) :: key_in, key_out
       integer(int_8) :: i
-      allocate( array1(1:15) )
+      allocate( value(1:15) )
       do i=1, 15
           value(i) = i
       end do
-      key_in % value = value
+      call set( key, value )
       call copy_key( key_in, key_out )
       print *, "key_in == key_out = ", key_test( key_in, key_out )
     end program demo_copy_key
@@ -238,20 +258,21 @@ is an `intent(out)` argument.
 ```fortran
     program demo_copy_other
       use stdlib_32_bit_key_data_wrapper, only: &
-          copy_other, other_test, other_type
+          copy_other, get, other_type, set
       use iso_fortran_env, only: int8
       implicit none
-      integer(int8), allocatable :: value(:)
+      integer(int8), allocatable :: value1(:), value2(:)
       type(other_type) :: other_in, other_out
       integer(int_8) :: i
-      allocate( array1(1:15) )
+      allocate( value1(1:15) )
       do i=1, 15
-          value(i) = i
+          value1(i) = i
       end do
-      other_in % value = value
+      call set( other_in, value1 )
       call copy_other( other_in, other_out )
+      call get( other_out, value2 )
       print *, "other_in == other_out = ", &
-        all( other_in % value == other_out % value )
+        all( value1 == value2 )
     end program demo_copy_other
 ```
 
@@ -303,17 +324,20 @@ E. Knuth. It multiplies the `KEY` by the odd valued approximation to
 
 ```fortran
     program demo_fibonacci_hash
-      use stdlib_32_bit_hash_codes, only: fibonacci_hash
+      use stdlib_32_bit_key_data_wrapper, only: &
+          fibonacci_hash
       use iso_fortran_env, only: int32 
       implicit none
       integer, allocatable :: array1(:)
       integer(int32) :: hash, source
-      allocate( array1(0:2**6-1) )
+	  type(key_type) :: key
+      allocate( array1(0:2**4-1) )
       array1(:) = 0
       source = int(Z'1FFFFFF', int32)
-      hash = fibonacci_hash(source, 6)
+      hash = fibonacci_hash(source, 4)
       azray1(hash) = source
       print *, hash
+	  print *, array
     end program demo_fibonacci_hash
 ```
 
@@ -367,14 +391,15 @@ expected to be minor compared to its faster hashing rate.
 
 ```fortran
     program demo_fnv_1_hasher
-      use stdlib_32_bit_key_data_wrapper, only: fnv_1_hasher, key_type
+      use stdlib_32_bit_key_data_wrapper, only: &
+          fnv_1_hasher, key_type, set
       use iso_fortran_env, only: int32 
       implicit none
       integer(int8), allocatable :: array1(:)
       integer(int32) :: hash
       type(key_type) :: key
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = fnv_1_hasher(key)
       print *, hash
     end program demo_fnv_1_hasher
@@ -430,14 +455,15 @@ expected to be minor compared to its faster hashing rate.
 
 ```fortran
     program demo_fnv_1a_hasher
-      use stdlib_32_bit_key_data_wrapper, only: fnv_1a_hasher, key_type
+      use stdlib_32_bit_key_data_wrapper, only: &
+         fnv_1a_hasher, key_type, set
       use iso_fortran_env, only: int32 
       implicit none
       integer(int8), allocatable :: array1(:)
       integer(int32) :: hash
       type(key_type) :: key
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = fnv_1a_hasher(key)
       print *, hash
     end program demo_fnv_1a_hasher
@@ -472,17 +498,17 @@ is an `intent(out)` argument.
 ```fortran
     program demo_free_key
       use stdlib_32_bit_key_data_wrapper, only: &
-          copy_key, free_key, key_type
+          copy_key, free_key, key_type, set
       use iso_fortran_env, only: int8
       implicit none
       integer(int8), allocatable :: value(:)
       type(key_type) :: key_in, key_out
       integer(int_8) :: i
-      allocate( array1(1:15) )
+      allocate( value(1:15) )
       do i=1, 15
         value(i) = i
       end do
-      key_in % value = value
+      call set( key_in, value )
       call copy_key( key_in, key_out )
       call free_key( key_out )
     end program demo_free_key
@@ -517,20 +543,78 @@ is an `intent(out)` argument.
 ```fortran
     program demo_free_other
       use stdlib_32_bit_key_data_wrapper, only: &
-          copy_other, free_other, other_type
+          copy_other, free_other, other_type, set
       use iso_fortran_env, only: int8
       implicit none
       integer(int8), allocatable :: value(:)
       type(key_type) :: other_in, other_out
       integer(int_8) :: i
-      allocate( array1(1:15) )
+      allocate( value(1:15) )
       do i=1, 15
           value(i) = i
       end do
-      other_in % value = value
+      call set( other_in, value )
       call copy_other( other_in, other_out )
       call free_other( other_out )
     end program demo_free_other
+```
+
+
+#### `get` - extracts the data from a derived type
+
+##### Status
+
+Experimental
+
+##### Description
+
+Extracts the data from a `key_type` or an `other_type` and stores it
+in the variable `value`..
+
+##### Syntax
+
+`call [[stdlib_32_bit_key_data_wrapper:get]]( key, value )`
+
+or
+
+`call [[stdlib_32_bit_key_data_wrapper:get]]( other, value )`
+
+
+##### Class
+
+Subroutine.
+
+##### Argument
+
+`key`: shall be a scalar expression of type `key_type`. It
+is an `intent(in)` argument.
+
+`other`: shall be a scalar expression of type `other_type`. It
+is an `intent(in)` argument.
+
+`value`: shall be an allocatable default character string variabl, or
+an allocatable vector variable of type integer and kind `INT8`. It is
+an `intent(out)` argument.
+
+##### Example
+
+```fortran
+    program demo_get
+      use stdlib_32_bit_key_data_wrapper, only: &
+          get, key_type, set
+      use iso_fortran_env, only: int8
+      implicit none
+      integer(int8), allocatable :: value(:), result(:)
+      type(key_type) :: key
+      integer(int_8) :: i
+      allocate( value(1:15) )
+      do i=1, 15
+        value(i) = i
+      end do
+      call set( key, value )
+      call get( key, result )
+      print *, `RESULT == VALUE = ', all( value  == result )
+    end program demo_get
 ```
 
 
@@ -576,7 +660,7 @@ pointers intended for use
 ```fortran
     program demo_hasher_fun
       use stdlib_32_bit_key_data_wrapper, only: &
-          fnv_1a_hasher, hasher_fun
+          fnv_1a_hasher, hasher_fun, set
       use iso_fortran_env, only: int8, int32 
       implicit none
       type(hasher_fun), pointer :: hasher_pointer
@@ -585,7 +669,7 @@ pointers intended for use
       type(key_type) :: key
       hasher_pointer => fnv_1a_hasher
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = hassher_pointer(key)
       print *, hash
     end program demo_hasher_fun
@@ -630,17 +714,17 @@ The result is `.TRUE.` if the keys are equal, otherwise `.FALSS`.
 ```fortran
     program demo_key_test
       use stdlib_32_bit_key_data_wrapper, only: &
-          copy_key, key_test, key_type
+          copy_key, key_test, key_type, set
       use iso_fortran_env, only: int8
       implicit none
       integer(int8), allocatable :: value(:)
       type(key_type) :: key_in, key_out
       integer(int_8) :: i
-      allocate( array1(1:15) )
+      allocate( value(1:15) )
       do i=1, 15
           value(i) = i
       end do
-      key_in % value = value
+      call set( key_in, value )
       call copy_key( key_in, key_out )
       print *, "key_in == key_out = ", key_test( key_in, key_out )
     end program demo_key_test
@@ -697,14 +781,14 @@ applications.
 ```fortran
     program demo_seeded_nmhash32_hasher
       use stdlib_32_bit_key_data_wrapper, only: &
-         seeded_nmhash32_hasher, key_type
+         seeded_nmhash32_hasher, key_type, set
       use iso_fortran_env, only: int32 
       implicit none
       integer(int8), allocatable :: array1(:)
       integer(int32) :: hash
       type(key_type) :: key
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = seeded_nmhash32_hasher (key)
       print *, hash
     end program demo_seeded_nmhash32_hasher
@@ -760,14 +844,14 @@ applications.
 ```fortran
     program demo_seeded_nmhash32x_hasher
       use stdlib_32_bit_key_data_wrapper, only: &
-         seeded_nmhash32x_hasher, key_type
+         seeded_nmhash32x_hasher, key_type, set
       use iso_fortran_env, only: int32 
       implicit none
       integer(int8), allocatable :: array1(:)
       integer(int32) :: hash
       type(key_type) :: key
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = seeded_nmhash32x_hasher (key)
       print *, hash
     end program demo_seeded_nmhash32x_hasher
@@ -824,17 +908,74 @@ applications.
 ```fortran
     program demo_seeded_water_hasher
       use stdlib_32_bit_key_data_wrapper, only: &
-         seeded_water_hasher, key_type
+         seeded_water_hasher, key_type, set
       use iso_fortran_env, only: int32 
       implicit none
       integer(int8), allocatable :: array1(:)
       integer(int32) :: hash
       type(key_type) :: key
       array1 = [ 5_int8, 4_int8, 3_int8, 1_int8, 10_int8, 4_int8 ]
-      key % value = array1
+      call set( key, array1 )
       hash = seeded_water_hasher (key)
       print *, hash
     end program demo_seeded_water_hasher
+```
+
+
+#### `set` - places the data in a derived type
+
+##### Status
+
+Experimental
+
+##### Description
+
+Places the data from `value` in a `key_type` or an `other_type`.
+
+##### Syntax
+
+`call [[stdlib_32_bit_key_data_wrapper:set]]( key, value )`
+
+or
+
+`call [[stdlib_32_bit_key_data_wrapper:set]]( other, value )`
+
+
+##### Class
+
+Subroutine.
+
+##### Argument
+
+`key`: shall be a scalar variable of type `key_type`. It
+is an `intent(out)` argument.
+
+`other`: shall be a scalar variable of type `other_type`. It
+is an `intent(out)` argument.
+
+`value`: shall be a default character string expression, or a
+vector expression of type integer and kind `INT8`. It is an
+`intent(in)` argument.
+
+##### Example
+
+```fortran
+    program demo_set
+      use stdlib_32_bit_key_data_wrapper, only: &
+          get, key_type, set
+      use iso_fortran_env, only: int8
+      implicit none
+      integer(int8), allocatable :: value(:), result(:)
+      type(key_type) :: key
+      integer(int_8) :: i
+      allocate( value(1:15) )
+      do i=1, 15
+        value(i) = i
+      end do
+      call set( key, value )
+      call get( key, result )
+      print *, `RESULT == VALUE = ', all( value  == result )
+    end program demo_set
 ```
 
 
@@ -1220,22 +1361,24 @@ Subroutine
         use, intrinsic:: iso_fortran_env, only: &
             int8
         use stdlib_chaining_hash_map, only: &
-            chaining_hash_map_type, fnv_1_hasher, get_other_data, &
-            int_index, key_type, map_entry, other_type
+            chaining_hash_map_type, fnv_1_hasher, get, get_other_data, &
+            int_index, key_type, map_entry, other_type, set
         integer(int_index)           :: inmap
         type(key_type)               :: key
         type(other_type)             :: other
         type(chaining_hash_map_type) :: map
+		integer(int8), allocatable :: data(:)
         call init_map( map, fnv_1_hasher )
-        key % value = [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ]
-        other % value = [ 4_int8, 3_int8, 2_int8, 1_int8 ]
+        call set( key, [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ] )
+        call set( other, [ 4_int8, 3_int8, 2_int8, 1_int8 ] )
         call map_entry( map, inmap, key, other )
         if ( inmap /= 0 ) then
             call get_other_data( map, inmap, other )
         else
             stop 'Invalid inmap'
         end if
-        print *, 'Other data = ', other % value
+        call get( other, data )
+        print *, 'Other data = ', data
     end program demo_get_other_data
 ```
 
@@ -1285,14 +1428,14 @@ Subroutine
             int8
         use stdlib_chaining_hash_map, only: &
             chaining_hash_map_type, fnv_1_hasher, in_map, &
-            int_index, key_type, map_entry, other_type
+            int_index, key_type, map_entry, other_type, set
         integer(int_index)           :: inmap
         type(key_type)               :: key
         type(other_type)             :: other
         type(chaining_hash_map_type) :: map
         call init_map( map, fnv_1_hasher )
-        key % value = [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ]
-        other % value = [ 4_int8, 3_int8, 2_int8, 1_int8 ]
+        call set( key, [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ] )
+        call set( other, [ 4_int8, 3_int8, 2_int8, 1_int8 ] )
         call map_entry( map, inmap, key, other )
         if ( inmap /= 0 ) then
             call in_map( map, inmap, key
@@ -1487,7 +1630,7 @@ is ignored.
             int8
         use stdlib_chaining_hash_map, only: &
 		    chaining_hash_map_type, fnv_1_hasher, init_map, &
-        	int_index, key_type, map_entry, other_type
+        	int_index, key_type, map_entry, other_type, set
         type(chaining_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -1496,8 +1639,8 @@ is ignored.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         print *, 'INMAP = ', inmap
     end program demo_map_entry
@@ -1585,7 +1728,7 @@ It is the hash method to be used by `map`.
         use stdlib_chaining_hash_map, only: &
 		    chaining_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            rehash_map
+            rehash_map, set
         type(chaining_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -1594,8 +1737,8 @@ It is the hash method to be used by `map`.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         call rehash_map( map, fnv_1a_hasher )
     end program demo_rehash_map
@@ -1635,7 +1778,7 @@ identifying the entry to be removed.
         use stdlib_chaining_hash_map, only: &
 		    chaining_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            remove_entry
+            remove_entry, set
         type(chaining_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -1644,8 +1787,8 @@ identifying the entry to be removed.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         call remove_entry( map, inmap )
     end program demo_remove_entry
@@ -1695,7 +1838,7 @@ the other data for the entry at the `inmap` index.
         use stdlib_chaining_hash_map, only: &
 		    chaining_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            set_other_data
+            set, set_other_data
         type(chaining_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -1704,10 +1847,10 @@ the other data for the entry at the `inmap` index.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        Call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
-        other % value = [ 17_int8, 5_int8, 6_int8, 15_int8, 40_int8 ]
+        call set( other, [ 17_int8, 5_int8, 6_int8, 15_int8, 40_int8 ] )
         call set_other_data( map, inmap, other )
     end program demo_set_other_data
 
@@ -1852,7 +1995,7 @@ index `inmap` in the inverse table.
         use stdlib_chaining_hash_map, only: &
 		    chaining_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            unmap
+            set, unmap
         type(chaining_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -1861,8 +2004,8 @@ index `inmap` in the inverse table.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         call unmap( map, inmap, key )
     end program demo_unmap
@@ -2298,22 +2441,24 @@ Subroutine
         use, intrinsic:: iso_fortran_env, only: &
             int8
         use stdlib_open_hash_map, only: &
-            open_hash_map_type, fnv_1_hasher, get_other_data, &
-            int_index, key_type, map_entry, other_type
-        integer(int_index)           :: inmap
-        type(key_type)               :: key
-        type(other_type)             :: other
-        type(open_hash_map_type) :: map
+            open_hash_map_type, fnv_1_hasher, get, get_other_data, &
+            int_index, key_type, map_entry, other_type, set
+        integer(int_index)         :: inmap
+        type(key_type)             :: key
+        type(other_type)           :: other
+        type(open_hash_map_type)   :: map
+		integer(int8), allocatable :: data(:)
         call init_map( map, fnv_1_hasher )
-        key % value = [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ]
-        other % value = [ 4_int8, 3_int8, 2_int8, 1_int8 ]
+        call set( key, [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ] )
+        call set( other, [ 4_int8, 3_int8, 2_int8, 1_int8 ] )
         call map_entry( map, inmap, key, other )
         if ( inmap /= 0 ) then
             call get_other_data( map, inmap, other )
         else
             stop 'Invalid inmap'
         end if
-        print *, 'Other data = ', other % value
+		call get( other, data )
+        print *, 'Other data = ', data
     end program demo_get_other_data
 ```
 
@@ -2363,14 +2508,14 @@ Subroutine
             int8
         use stdlib_open_hash_map, only: &
             open_hash_map_type, fnv_1_hasher, in_map, &
-            int_index, key_type, map_entry, other_type
+            int_index, key_type, map_entry, other_type, set
         integer(int_index)           :: inmap
         type(key_type)               :: key
         type(other_type)             :: other
         type(open_hash_map_type) :: map
         call init_map( map, fnv_1_hasher )
-        key % value = [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ]
-        other % value = [ 4_int8, 3_int8, 2_int8, 1_int8 ]
+        call set( key, [ 0_int8, 1_int8, 2_int8, 3_int8, 4_int8 ] )
+        call set( other, [ 4_int8, 3_int8, 2_int8, 1_int8 ] )
         call map_entry( map, inmap, key, other )
         if ( inmap /= 0 ) then
             call in_map( map, inmap, key
@@ -2626,7 +2771,7 @@ is ignored.
             int8
         use stdlib_open_hash_map, only: &
 		    open_hash_map_type, fnv_1_hasher, init_map, &
-        	int_index, key_type, map_entry, other_type
+        	int_index, key_type, map_entry, other_type, set
         type(open_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -2635,8 +2780,8 @@ is ignored.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
 		print *, 'INMAP = ', inmap
     end program demo_map_entry
@@ -2724,7 +2869,7 @@ It is the hash method to be used by `map`.
         use stdlib_open_hash_map, only: &
 		    open_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            rehash_map
+            rehash_map, set
         type(open_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -2733,8 +2878,8 @@ It is the hash method to be used by `map`.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         call rehash_map( map, fnv_1a_hasher )
     end program demo_rehash_map
@@ -2784,7 +2929,7 @@ the other data for the entry at the `inmap` index.
         use stdlib_open_hash_map, only: &
 		    open_hash_map_type, fnv_1_hasher, fnv_1a_hasher,&
             init_map, int_index, key_type, map_entry, other_type, &
-            set_other_data
+            set, set_other_data
         type(open_hash_map_type) :: map
         type(key_type)      :: key
         type(other_type)    :: other
@@ -2793,10 +2938,10 @@ the other data for the entry at the `inmap` index.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
-        other % value = [ 17_int8, 5_int8, 6_int8, 15_int8, 40_int8 ]
+        call set( other, [ 17_int8, 5_int8, 6_int8, 15_int8, 40_int8 ] 
         call set_other_data( map, inmap, other )
     end program demo_set_other_data
 
@@ -2950,8 +3095,8 @@ index `inmap` in the inverse table.
                        fnv_1_hasher,   &
                        slots_power=10, &
                        max_power=20 )
-        key % value = [ 5_int8, 7_int8, 4_int8, 13_int8 ]
-        other % value = [ 1_int8, 5_int8, 3_int8, 15_int8 ]
+        call set( key, [ 5_int8, 7_int8, 4_int8, 13_int8 ] )
+        call set( other, [ 1_int8, 5_int8, 3_int8, 15_int8 ] )
         call map_entry( map, inmap, key, other )
         call unmap( map, inmap, key )
     end program demo_unmap
