@@ -68,6 +68,8 @@ domain. Permission has been granted, by Landon Curt Noll, for the use
 of these algorithms in the Fortran Standard Library. A description of
 these functions is available at
 <https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function>.
+These functions have been modified from their normal forms to also
+encode the structure size in the output hash.
 
 Similarly `SPOOKY_HASH` and associated procedures are translations to
 Fortran 2008 and signed two's complement integers of the unsigned 64
@@ -384,6 +386,8 @@ algorithms in the form of two separate overloaded functions: `FNV_1`
 and `FNV_1A`.
 The FNV-1 and FNV-2 algorithms differ in their order of the
 multiplication and exclusive or operations.
+They differ from their normal implementation in that they also
+encode the structure size in  the hash code.
 The 32 and 64 bit algorithms differ in their initial offsets and in
 their multiplicative constants.
 Analysis suggests that `FNV_1A` should be better at randomizing the
@@ -572,6 +576,8 @@ The result is a scalar integer of kind `INT32`.
 
 `FNV_1_HASH` is an implementation of the original FNV-1 hash code of Glenn
 Fowler, Landon Curt Noll, and Phong Vo.
+It differs from typical implementations in that it also ecodes the
+size of the structure in the hash code.
 This code is relatively fast on short keys, and is small enough that it
 will often be retained in the instruction cache if hashing is
 intermitent.
@@ -632,6 +638,8 @@ The result is a scalar integer of kind `INT32`.
 
 `FNV_1A_HASH` is an implementation of the alternative FNV-1a hash code of
 Glenn Fowler, Landon Curt Noll, and Phong Vo.
+It differs from typical implementations in that it also ecodes the
+size of the structure in the hash code.
 This code is relatively fast on short keys, and is small enough that it
 will often be retained in the instruction cache if hashing is
 intermitent.
@@ -1195,6 +1203,8 @@ The result is a scalar integer of kind `INT64`.
 
 `FNV_1` is an implementation of the original FNV-1 hash code of Glenn
 Fowler, Landon Curt Noll, and Phong Vo.
+It differs from typical implementations in that it also ecodes the
+size of the structure in the hash code.
 This code is relatively fast on short keys, and is small enough that it
 will often be retained in the instruction cache if hashing is
 intermitent.
@@ -1255,6 +1265,8 @@ The result is a scalar integer of kind `INT32`.
 
 `FNV_1A` is an implementation of the alternative FNV-1a hash code of
 Glenn Fowler, Landon Curt Noll, and Phong Vo.
+It differs from typical implementations in that it also ecodes the
+size of the structure in the hash code.
 This code is relatively fast on short keys, and is small enough that it
 will often be retained in the instruction cache if hashing is
 intermitent.
