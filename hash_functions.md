@@ -1593,8 +1593,8 @@ It multiplies the `KEY` by `SEED`, and returns the
 
 The Fortran Standard Library provides two test codes for the hash
 functions of `stdlib_32_bit_hash_functions` and
-`stdlib_64_bit_hash_functions`, `test_32_bit_hash_functions` and
-`test_64_bit_hash_functions` respectively. These are primarilly set
+`stdlib_64_bit_hash_functions`, `test_32_bit_hash_performance` and
+`test_64_bit_hash_performance` respectively. These are primarilly set
 up to test runtime performance of the functions. They take a sample of
 `2**18` integers of kind `INT8` and break it up into vectors of size
 1, 2, 4, 8, 16, 64,  256, and 1024 elements, yielding `2**22`,
@@ -1604,7 +1604,7 @@ then processed by the hash functions,
 and the time for processing is reported. Testing so far has been on a
 MacBook Pro with a 2.3 GHz Quad-Core Intel Core i5 and 8 GB 2133 MHz
 LPDDR3 of RAM, using GNU Fortran (GCC) 11.1.0 to compile the code. The
-results for `test_32_bit_hash_functions` is given by the following
+results for `test_32_bit_hash_performance` is given by the following
 table:
 
 | Algorithm  | Key Size  | Key #      | Time (s) |
@@ -1651,7 +1651,7 @@ table:
 |     water  |     256   |       4096 |  0.00770 |
 |     water  |    1024   |       1024 |  0.00737 |
 
-while for `test_64_bit_hash_functions` the results are:
+while for `test_64_bit_hash_performance` the results are:
 
 | Algorithm  | Key Size  | Key #      | Time (s) |
 |            | Bytes     |            |          |
