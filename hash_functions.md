@@ -538,7 +538,7 @@ E. Knuth. It multiplies the `KEY` by the odd valued approximation to
       source = int(Z'1FFFFFF', int32)
       hash = fibonacci_hash(source, 6)
       azray1(hash) = source
-      print*, hash
+      print *, hash
     end program demo_fibonacci_hash
 ```
 
@@ -599,7 +599,7 @@ expected to be minor compared to its faster hashing rate.
       integer(int32) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1_hash(array1)
-      print*, hash
+      print *, hash
     end program demo_fnv_1_hash
 ```
 
@@ -660,7 +660,7 @@ expected to be minor compared to its faster hashing rate.
       integer(int32) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1a_hash(array1)
-      print*, hash
+      print *, hash
     end program demo_fnv_1a_hash
 ```
 
@@ -837,7 +837,7 @@ This code passes the SMHasher tests, and has no known bad seeds:
       call new_nmhash32_seed(seed)
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = nmhash32(array1, seed)
-      print*, seed, hash
+      print *, seed, hash
     end program demo_nmhash32
 ```
 
@@ -899,7 +899,7 @@ This code passes the SMHasher tests, and has no known bad seeds:
       call new_nmhash32x_seed(seed)
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = nmhash32x(array1, seed)
-      print*, seed, hash
+      print *, seed, hash
     end program demo_nmhash32x
 ```
 
@@ -998,7 +998,7 @@ It multiplies the `KEY` by `SEED`, and returns the
       source = int(Z'1FFFFFF', int32)
       hash = universal_mult_hash(source, seed, 6)
       azray1(hash) = source
-      print*, seed, hash, array1
+      print *, seed, hash, array1
     end program demo_odd_random_integer
 ```
 
@@ -1063,7 +1063,7 @@ It can have undefined behavior if the key is not word aligned.
       call new_water_hash_seed( seed )
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = water_hash(array1, seed)
-      print*, hash, seed
+      print *, hash, seed
     end program demo_water_hash
 ```
 
@@ -1165,7 +1165,7 @@ E. Knuth. It multiplies the `KEY` by the odd valued approximation to
       source = int(Z'1FFFFFFFF', int64)
       hash = fibonacci_hash(source, 6)
       azray1(hash) = source
-      print*, hash
+      print *, hash
     end program demo_fibonacci_hash
 ```
 
@@ -1226,7 +1226,7 @@ expected to be minor compared to its faster hashing rate.
       integer(int64) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1_hash(array1)
-      print*, hash
+      print *, hash
     end program demo_fnv_1_hash
 ```
 
@@ -1287,7 +1287,7 @@ expected to be minor compared to its faster hashing rate.
       integer(int64) :: hash
       array1 = [ 5, 4, 3, 1, 10, 4, 9]
       hash = fnv_1a_hash(array1)
-      print*, hash
+      print *, hash
     end program demo_fnv_1a_hash
 ```
 
@@ -1457,7 +1457,7 @@ no known bad seeds.
       seed = 0_int32
       call new_pengy_hash_seed( seed )
       hash = pengy_hash( key, seed )
-      print*, seed, hash
+      print *, seed, hash
     end program demo_pengy_hash
 ```
 
@@ -1519,7 +1519,7 @@ and has no known bad seeds.
       seed = [ 119_int64, 2_int64**41-1 ]
       call new_spooky_hash_seed( seed )
       hash = spooky_hash( key, seed )
-      print*, seed, hash
+      print *, seed, hash
     end program demo_spooky_hash
 ```
 
@@ -1584,7 +1584,7 @@ It multiplies the `KEY` by `SEED`, and returns the
       source = int(Z'1FFFFFF', int64)
       hash = universal_mult_hash(source, seed, 6)
       azray1(hash) = source
-      print*, seed, hash, array1
+      print *, seed, hash, array1
     end program demo_universal_mult_hash
 ```
 
