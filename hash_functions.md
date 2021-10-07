@@ -1447,7 +1447,7 @@ no known bad seeds.
 
 ```fortran
     program demo_pengy_hash
-      use stdlib_64_bit_hash_codes, only: new_pengy_hash_seed, engy_hash
+      use stdlib_64_bit_hash_codes, only: new_pengy_hash_seed, pengy_hash
       use iso_fortran_env, only: int64 
       implicit none
       integer, allocatable :: key(:)
