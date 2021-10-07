@@ -1596,16 +1596,15 @@ functions of `stdlib_32_bit_hash_functions` and
 `stdlib_64_bit_hash_functions`, `test_32_bit_hash_performance` and
 `test_64_bit_hash_performance` respectively. These are primarilly set
 up to test runtime performance of the functions. They take a sample of
-`2**18` integers of kind `INT8` and break it up into vectors of size
-1, 2, 4, 8, 16, 64,  256, and 1024 elements, yielding `2**22`,
-`2**21`, `2**20`, `2**19`, `2**18`, `2**16`, `2**14`, and  `2**12`
-vectors respectively, and repeat the processing 4 times. These are
-then processed by the hash functions,
-and the time for processing is reported. Testing so far has been on a
-MacBook Pro with a 2.3 GHz Quad-Core Intel Core i5 and 8 GB 2133 MHz
-LPDDR3 of RAM, using GNU Fortran (GCC) 11.1.0 to compile the code. The
-results for `test_32_bit_hash_performance` is given by the following
-table:
+`2**18 integers of kind `INT8` and break it up into vectors of size
+1, 2, 4, 8, 16, 64,  256, and 1024 elements, yielding `2**18`,
+`2**17`, `2**16`, `2**15`, `2**14`, `2**12`, `2**10`, and `2**8`
+vectors respectively. These are then processed by the hash functions
+4 times, and the time for processing is reported. Testing so far has
+been on a MacBook Pro with a 2.3 GHz Quad-Core Intel Core i5 and 8 GB
+2133 MHz LPDDR3 of RAM, using GNU Fortran (GCC) 11.1.0 to compile the
+code. The results for `test_32_bit_hash_performance` is given by the
+following table:
 
 | Algorithm  | Key Size  | Key #      | Time (s) |
 |            | Bytes     |            |          |
