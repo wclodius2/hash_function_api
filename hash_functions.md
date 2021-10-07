@@ -1596,7 +1596,7 @@ functions of `stdlib_32_bit_hash_functions` and
 `stdlib_64_bit_hash_functions`, `test_32_bit_hash_performance` and
 `test_64_bit_hash_performance` respectively. These are primarilly set
 up to test runtime performance of the functions. They take a sample of
-`2**18 integers of kind `INT8` and break it up into vectors of size
+`2**18` integers of kind `INT8` and break it up into vectors of size
 1, 2, 4, 8, 16, 64,  256, and 1024 elements, yielding `2**18`,
 `2**17`, `2**16`, `2**15`, `2**14`, `2**12`, `2**10`, and `2**8`
 vectors respectively. These are then processed by the hash functions
